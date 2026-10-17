@@ -1,0 +1,16 @@
+# Core API & Configuration
+requests==2.31.0
+python-dotenv==1.0.1
+
+# Kafka Producer Client
+# (kafka-python-ng is the actively maintained, drop-in replacement for kafka-python)
+kafka-python-ng==2.2.2
+
+# Stream Processing (Apache Spark Structured Streaming)
+pyspark==3.5.1
+
+# Database Connectivity (PostgreSQL verification & utility scripts)
+psycopg2-binary==2.9.9
+
+# Testing & Validation
+pytest==8.1.1

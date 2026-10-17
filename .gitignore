@@ -1,0 +1,31 @@
+# Python virtual environment
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.ipynb_checkpoints
+
+# Environment variables & secrets
+config/.env
+.env
+*.env.local
+
+# Checkpoints & runtime logs
+checkpoints/
+logs/
+*.log
+spark-warehouse/
+metastore_db/
+derby.log
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Power BI
+*.pbix.backup
