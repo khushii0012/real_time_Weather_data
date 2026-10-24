@@ -46,12 +46,29 @@ KAFKA_TOPIC_NAME = os.getenv("KAFKA_TOPIC_NAME", "weather-data")
 
 # Windows Hadoop & Java Environment Auto-Configuration
 if os.name == "nt":
-    if not os.environ.get("HADOOP_HOME") and os.path.exists("C:\\hadoop"):
-        os.environ["HADOOP_HOME"] = "C:\\hadoop"
-        os.environ["PATH"] = "C:\\hadoop\\bin;" + os.environ.get("PATH", "")
-    if not os.environ.get("JAVA_HOME") and os.path.exists("C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.101-hotspot"):
-        os.environ["JAVA_HOME"] = "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.101-hotspot"
-        os.environ["PATH"] = "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.101-hotspot\\bin;" + os.environ.get("PATH", "")
+    # Auto-detect HADOOP_HOME
+    hadoop_candidates = [
+        os.path.expanduser("~\\hadoop"),  # C:\Users\<user>\hadoop
+        "C:\\hadoop",
+    ]
+    if not os.environ.get("HADOOP_HOME"):
+        for hpath in hadoop_candidates:
+            if os.path.exists(hpath):
+                os.environ["HADOOP_HOME"] = hpath
+                os.environ["PATH"] = os.path.join(hpath, "bin") + ";" + os.environ.get("PATH", "")
+                break
+
+    # Auto-detect JAVA_HOME (prefer JDK 17 for Spark 3.5 compatibility)
+    java_candidates = [
+        "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.101-hotspot",
+        "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.20.1+1-hotspot",
+    ]
+    if not os.environ.get("JAVA_HOME"):
+        for jpath in java_candidates:
+            if os.path.exists(jpath):
+                os.environ["JAVA_HOME"] = jpath
+                os.environ["PATH"] = os.path.join(jpath, "bin") + ";" + os.environ.get("PATH", "")
+                break
 
 # PostgreSQL Configurations
 POSTGRES_HOST = os.getenv("POSTGRES_HOST", "localhost")
